@@ -15,3 +15,8 @@
     Gateway Service 구성 중, `https://start.spring.io/`에서 의존성으로 등록했던 `Spring Cloud Routing:Gateway`는 `org.springframework.cloud:spring-cloud-starter-gateway-mvc`로 만들어짐. 하지만, 이 의존성은 제대로 작동하지 않았고 mvc를 제거한 `org.springframework.cloud:spring-cloud-starter-gateway`으로 진행하면서 해결됨.
 
     [Velog:Spring에서 Eureka Gateway 작동 안될 때](https://velog.io/@westreed/Spring%EC%97%90%EC%84%9C-Eureka-Gateway-%EC%9E%91%EB%8F%99-%EC%95%88%EB%90%A0-%EB%95%8C)
+
+## 다음 목표
+
+1. Docker로 묶어서 서비스를 실행하기.
+2. 간단하게 서비스를 구현하여 마이크로 서비스끼리 내부통신 해보기.
