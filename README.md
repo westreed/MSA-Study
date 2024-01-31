@@ -7,7 +7,7 @@
 * User Service : 마이크로 서비스, 간단한 테스트를 위해 만듬.
 * LLM Service : 마이크로 서비스, Python Flask와 연동을 테스트해보기 위해 만듬.
 
-<img src="https://github.com/westreed/MSA-Study/blob/main/_src_/docker_container.png"/>
+<img src="https://github.com/westreed/MSA-Study/blob/main/_src/docker_container.png"/>
 
 ## 오류 및 해결
 
