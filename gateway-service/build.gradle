@@ -11,6 +11,10 @@ java {
 	sourceCompatibility = '21'
 }
 
+bootJar {
+	archiveFileName = "${rootProject.name}.jar"
+}
+
 repositories {
 	mavenCentral()
 }

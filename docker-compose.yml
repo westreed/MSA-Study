@@ -1,0 +1,31 @@
+version: '3'
+
+networks:
+  ms-network:
+    driver: bridge
+
+services:
+  discovery-service:
+    build: ./discovery-service
+    ports:
+      - "8761:8761"
+    networks:
+      - ms-network
+  gateway-service:
+    build: ./gateway-service
+    ports:
+      - "8000:8000"
+    networks:
+      - ms-network
+  llm-service:
+    build: ./llm-service
+    ports:
+      - "40010:40010"
+    networks:
+      - ms-network
+  user-service:
+    build: ./user-service
+    ports:
+      - "64412:64412"
+    networks:
+      - ms-network

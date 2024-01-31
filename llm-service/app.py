@@ -3,9 +3,9 @@ from py_eureka_client import eureka_client
 
 instance_port = 40010
 eureka_client.init(
-    eureka_server="http://localhost:8761/eureka",
+    eureka_server="http://discovery-service:8761/eureka",# "http://localhost:8761/eureka",
     app_name="llm-service",
-    instance_host="127.0.0.1",
+    instance_host="localhost",
     instance_port=instance_port,
 )
 

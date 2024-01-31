@@ -7,6 +7,7 @@
 * User Service : 마이크로 서비스, 간단한 테스트를 위해 만듬.
 * LLM Service : 마이크로 서비스, Python Flask와 연동을 테스트해보기 위해 만듬.
 
+<img src="https://github.com/westreed/MSA-Study/blob/main/_src_/docker_container.png"/>
 
 ## 오류 및 해결
 
@@ -16,7 +17,12 @@
 
     [Velog:Spring에서 Eureka Gateway 작동 안될 때](https://velog.io/@westreed/Spring%EC%97%90%EC%84%9C-Eureka-Gateway-%EC%9E%91%EB%8F%99-%EC%95%88%EB%90%A0-%EB%95%8C)
 
+2. Docker Compose로 컨테이너화했을 때 서비스 등록 안됨
+
+    Docker Network 안에 묶인 형태이므로, Docker 내부에서 사용하는 Eureka Server 주소를 건내줘야 한다.
+    보통은 docker-compose.yml의 서비스 이름으로 네트워크 위치를 알려줄 수 있음.
+
 ## 다음 목표
 
-1. Docker로 묶어서 서비스를 실행하기.
+1. ~~Docker로 묶어서 서비스를 실행하기.~~ (✅)
 2. 간단하게 서비스를 구현하여 마이크로 서비스끼리 내부통신 해보기.
