@@ -8,6 +8,7 @@
 * LLM Service : 마이크로 서비스, Python Flask와 연동을 테스트해보기 위해 만듬.
 
 <img src="https://github.com/westreed/MSA-Study/blob/main/_src/docker_container.png"/>
+<img src="https://github.com/westreed/MSA-Study/blob/main/_src/internal_request.png"/>
 
 ## 오류 및 해결
 
@@ -25,4 +26,6 @@
 ## 다음 목표
 
 1. ~~Docker로 묶어서 서비스를 실행하기.~~ (✅)
-2. 간단하게 서비스를 구현하여 마이크로 서비스끼리 내부통신 해보기.
+2. ~~간단하게 서비스를 구현하여 마이크로 서비스끼리 내부통신 해보기.~~ (✅)
+3. Spring에서 FastAPI 쪽에 요청해서 가져오기.
+4. FastAPI에서 다른 서비스에게 요청할 때 Spring의 Feign Client처럼 간편하게 할 수 없는지 찾아보기.
