@@ -11,21 +11,53 @@ services:
       - "8761:8761"
     networks:
       - ms-network
+    deploy:
+      resources:
+        limits:
+          cpus: "1.00"
+          memory: 500M
+        reservations:
+          cpus: "0.50"
+          memory: 250M
   gateway-service:
     build: ./gateway-service
     ports:
       - "8000:8000"
     networks:
       - ms-network
+    deploy:
+      resources:
+        limits:
+          cpus: "1.00"
+          memory: 500M
+        reservations:
+          cpus: "0.50"
+          memory: 250M
   llm-service:
     build: ./llm-service
     ports:
       - "40010:40010"
     networks:
       - ms-network
+    deploy:
+      resources:
+        limits:
+          cpus: "1.00"
+          memory: 500M
+        reservations:
+          cpus: "0.50"
+          memory: 250M
   user-service:
     build: ./user-service
     ports:
       - "64412:64412"
     networks:
       - ms-network
+    deploy:
+      resources:
+        limits:
+          cpus: "1.00"
+          memory: 500M
+        reservations:
+          cpus: "0.50"
+          memory: 250M
