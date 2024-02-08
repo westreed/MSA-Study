@@ -19,12 +19,12 @@ class StrEnum(str, Enum):
 
 
 class Scheduling(StrEnum):
-    SEQUENCE = 1
+    ROUND_ROBIN = 1
 
 
 class FeignProvider:
 
-    def __init__(self, eureka_server, app_name, scheduling="sequence"):
+    def __init__(self, eureka_server, app_name, scheduling="round-robin"):
         self.eureka_server = eureka_server
         self.app_name = app_name
         self.scheduling = scheduling.upper().replace("-", "_")
@@ -37,7 +37,7 @@ class FeignProvider:
         global g_redis_scheduling_map
         cur_index = g_redis_scheduling_map[self.app_name]
 
-        if self.scheduling == Scheduling.SEQUENCE:
+        if self.scheduling == Scheduling.ROUND_ROBIN:
             if size-1 > cur_index:
                 cur_index += 1
             else:
