@@ -85,4 +85,6 @@
     * 4-1. 대신 간단하게 사용할 수 있는 클래스 구현. (✔️)
 5. Spring Feign Client 사용해보기. (✔️)
 6. OAuth를 활용한 인증/인가 서비스 공부.
+    * 6-1. Spring Security 학습. (✔️)
+    * 6-2. React + Security + JWT + OAuth2.0 학습. [참고자료](https://github.com/chunghee-hwang/spring-security-and-react-integration/blob/master/README.md)
 7. 인증/인가 서비스를 통한 인가 관리.
