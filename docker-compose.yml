@@ -4,7 +4,34 @@ networks:
   ms-network:
     driver: bridge
 
+volumes:
+  data_mysqldb: null
+
 services:
+  mysql-service:
+    image: mysql
+    restart: on-failure
+    environment:
+      MYSQL_DATABASE: user_service
+      MYSQL_ROOT_HOST: '%'
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
+      TZ: 'Asia/Seoul'
+    ports:
+      - "3306:3306"
+    volumes:
+      - data_mysqldb:/var/lib/mysqldb
+    networks:
+      - ms-network
+    tty: true
+    deploy:
+      resources:
+        limits:
+          cpus: "1.00"
+          memory: 1000M
+        reservations:
+          cpus: "0.50"
+          memory: 500M
+          
   discovery-service:
     build: ./discovery-service
     ports:
@@ -19,6 +46,7 @@ services:
         reservations:
           cpus: "0.50"
           memory: 250M
+
   gateway-service:
     build: ./gateway-service
     ports:
@@ -33,6 +61,7 @@ services:
         reservations:
           cpus: "0.50"
           memory: 250M
+
   llm-service:
     build: ./llm-service
     ports:
@@ -47,7 +76,10 @@ services:
         reservations:
           cpus: "0.50"
           memory: 250M
+
   user-service:
+    depends_on:
+      - mysql-service
     build: ./user-service
     ports:
       - "64412:64412"
@@ -61,3 +93,8 @@ services:
         reservations:
           cpus: "0.50"
           memory: 250M
+    environment:
+      - SECRET=${SECRET}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
+      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}

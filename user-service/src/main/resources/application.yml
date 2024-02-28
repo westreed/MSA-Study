@@ -2,6 +2,13 @@ server:
   port: 64412
 
 spring:
+  config:
+    import:
+      - classpath:/yaml/application-local.yml
+      - classpath:/yaml/application-dev.yml
+  profiles:
+    active: local
+    include: jwt, oauth
   application:
     name: user-service
 

@@ -1,4 +1,4 @@
-package study.msa.userservice.provider;
+package study.msa.userservice.global.provider;
 
 import org.springframework.web.bind.annotation.GetMapping;
 

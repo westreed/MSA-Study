@@ -1,4 +1,4 @@
-package study.msa.userservice.provider;
+package study.msa.userservice.global.provider;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
