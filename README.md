@@ -72,6 +72,13 @@
     Docker Network 안에 묶인 형태이므로, Docker 내부에서 사용하는 Eureka Server 주소를 건내줘야 한다.
     보통은 docker-compose.yml의 서비스 이름으로 네트워크 위치를 알려줄 수 있음.
 
+3. 인증/인가 처리에서 중복코드는 어떻게 해결해야 하는가
+
+    API Gateway에서 Header에 포함된 토큰의 유효성을 검사하고 Payload에 담긴 사용자정보를 토대로 Request 요청을 다시 재구성 한 후,
+    다시 목적지로 보냄. 그런데 Gateway로부터 전달 받는 모든 마이크로 서비스에서는 접근 제어를 위해, Security를 사용하고 있고
+    사용자정보가 있을 경우 인증된 사용자로 처리해야 하는데 이 과정에서 중복코드가 발생함.
+    [Spring MSA로 구성된 다른 서비스 참고해보기](https://github.com/bithumb-talk)
+
 ## 다음 목표
 
 1. Docker로 묶어서 서비스를 실행하기. (✔️)

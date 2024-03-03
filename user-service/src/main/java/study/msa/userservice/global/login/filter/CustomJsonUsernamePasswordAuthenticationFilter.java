@@ -34,6 +34,7 @@ public class CustomJsonUsernamePasswordAuthenticationFilter extends AbstractAuth
         this.objectMapper = objectMapper;
     }
 
+    // POST /login일 때에만 작동함.
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
         log.info("CustomJsonUsernamePasswordAuthenticationFilter의 attemptAuthentication() 호출");
