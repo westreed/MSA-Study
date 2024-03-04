@@ -79,6 +79,10 @@
     사용자정보가 있을 경우 인증된 사용자로 처리해야 하는데 이 과정에서 중복코드가 발생함.
     [Spring MSA로 구성된 다른 서비스 참고해보기](https://github.com/bithumb-talk)
 
+    현재 이 프로젝트는 MVC 패턴에서 View는 React.js로 제작할 예정으로, 인가 과정에서의 페이지에 대한 접근 제어는 서버측에서 할 필요가 없다!
+    즉, Spring에서는 공개된 API에 대한 접근 제어만 잘 처리하면 되는 것! 위의 레포를 참고한 결과, URL의 경로상에 `auth`가 있으면 Gateway에서
+    JWT에 포함된 데이터를 기반으로 처리했음.
+
 ## 다음 목표
 
 1. Docker로 묶어서 서비스를 실행하기. (✔️)
@@ -89,5 +93,7 @@
 5. Spring Feign Client 사용해보기. (✔️)
 6. OAuth를 활용한 인증/인가 서비스 공부.
     * 6-1. Spring Security 학습. (✔️)
-    * 6-2. React + Security + JWT + OAuth2.0 학습. [참고자료](https://github.com/chunghee-hwang/spring-security-and-react-integration/blob/master/README.md)
+    * 6-2. React + Security + JWT + OAuth2.0 학습. [참고자료](https://github.com/chunghee-hwang/spring-security-and-react-integration/blob/master/README.md) (✔️)
+    * 6-3. MSA에서 인증/인가를 어떻게 처리하는지 학습. [참고자료](https://medium.com/spoontech/%EB%A7%88%EC%9D%B4%ED%81%AC%EB%A1%9C%EC%84%9C%EB%B9%84%EC%8A%A4-%EA%B5%AC%EC%A1%B0-msa-%EC%9D%98-%EC%9D%B8%EC%A6%9D-%EB%B0%8F-%EC%9D%B8%EA%B0%80-authorization-authentication-a595179ab88e) (✔️)
 7. 인증/인가 서비스를 통한 인가 관리.
+8. 실제 서비스에 적용하기.

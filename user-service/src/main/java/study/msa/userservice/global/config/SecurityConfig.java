@@ -15,9 +15,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import study.msa.userservice.domain.repository.UserRepository;
-import study.msa.userservice.global.jwt.filter.JwtAuthenticationProcessingFilter;
 import study.msa.userservice.global.jwt.service.JwtService;
 import study.msa.userservice.global.login.filter.CustomJsonUsernamePasswordAuthenticationFilter;
 import study.msa.userservice.global.login.handler.LoginFailureHandler;
@@ -74,7 +72,6 @@ public class SecurityConfig {
         );
         // 순서 : LogoutFilter -> CustomJsonUsernamePasswordAuthenticationFilter
         http.addFilterAfter(customJsonUsernamePasswordAuthenticationFilter(), LogoutFilter.class);
-        http.addFilterBefore(jwtAuthenticationProcessingFilter(), CustomJsonUsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
@@ -104,10 +101,5 @@ public class SecurityConfig {
         authenticationFilter.setAuthenticationSuccessHandler(loginSuccessHandler());
         authenticationFilter.setAuthenticationFailureHandler(loginFailureHandler());
         return authenticationFilter;
-    }
-
-    @Bean
-    public JwtAuthenticationProcessingFilter jwtAuthenticationProcessingFilter() {
-        return new JwtAuthenticationProcessingFilter(jwtService, userRepository);
     }
 }
