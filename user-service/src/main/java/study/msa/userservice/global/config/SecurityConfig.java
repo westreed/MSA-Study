@@ -17,7 +17,10 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
 import study.msa.userservice.domain.repository.UserRepository;
 import study.msa.userservice.global.jwt.service.JwtService;
+import study.msa.userservice.global.login.handler.CustomAuthenticationEntryPoint;
+import study.msa.userservice.global.login.filter.AuthenticationProcessingFilter;
 import study.msa.userservice.global.login.filter.CustomJsonUsernamePasswordAuthenticationFilter;
+import study.msa.userservice.global.login.handler.CustomAccessDeniedHandler;
 import study.msa.userservice.global.login.handler.LoginFailureHandler;
 import study.msa.userservice.global.login.handler.LoginSuccessHandler;
 import study.msa.userservice.global.login.service.PrincipalDetailsService;
@@ -37,6 +40,8 @@ public class SecurityConfig {
     private final CustomOAuth2UserService customOAuth2UserService;
     private final OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
     private final OAuth2LoginFailureHandler oAuth2LoginFailureHandler;
+    private final CustomAccessDeniedHandler customAccessDeniedHandler;
+    private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
 
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
@@ -57,6 +62,11 @@ public class SecurityConfig {
                 .requestMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().permitAll()
         );
+        // 승인되지 않은 접근(401)이나 접근 권한이 없는 경우(403)
+        http.exceptionHandling(handler -> handler
+                .accessDeniedHandler(customAccessDeniedHandler)
+                .authenticationEntryPoint(customAuthenticationEntryPoint)
+        );
         http.formLogin(AbstractHttpConfigurer::disable);
 //        http.formLogin(form -> form
 //                .loginPage("/loginForm")
@@ -64,6 +74,7 @@ public class SecurityConfig {
 //                .defaultSuccessUrl("/")
 //        );
         http.oauth2Login(oauth2 -> oauth2
+                .failureUrl("/")
                 //.loginPage("/loginForm")
                 .successHandler(oAuth2LoginSuccessHandler)
                 .failureHandler(oAuth2LoginFailureHandler)
@@ -71,7 +82,10 @@ public class SecurityConfig {
 //                .defaultSuccessUrl("/")
         );
         // 순서 : LogoutFilter -> CustomJsonUsernamePasswordAuthenticationFilter
+//        http.addFilterAfter(customJsonUsernamePasswordAuthenticationFilter(), LogoutFilter.class);
+        // 순서 : LogoutFilter -> AuthenticationProcessingFilter -> CustomJsonUsernamePasswordAuthenticationFilter
         http.addFilterAfter(customJsonUsernamePasswordAuthenticationFilter(), LogoutFilter.class);
+        http.addFilterBefore(authenticationProcessingFilter(), CustomJsonUsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
@@ -101,5 +115,10 @@ public class SecurityConfig {
         authenticationFilter.setAuthenticationSuccessHandler(loginSuccessHandler());
         authenticationFilter.setAuthenticationFailureHandler(loginFailureHandler());
         return authenticationFilter;
+    }
+
+    @Bean
+    public AuthenticationProcessingFilter authenticationProcessingFilter() {
+        return new AuthenticationProcessingFilter(objectMapper);
     }
 }

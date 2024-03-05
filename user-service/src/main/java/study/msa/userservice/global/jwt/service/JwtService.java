@@ -12,6 +12,7 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import study.msa.userservice.domain.model.User;
 import study.msa.userservice.domain.repository.UserRepository;
 
 import java.security.Key;
@@ -27,7 +28,8 @@ public class JwtService {
     private final String BEARER = "Bearer ";
     private final String ACCESS_TOKEN_SUBJECT = "AccessToken";
     private final String REFRESH_TOKEN_SUBJECT = "RefreshToken";
-    private final String NAME_CLAIM = "name";
+    private final String CLAIM_NAME = "name";
+    private final String CLAIN_ROLE = "role";
 
     @Value("${jwt.secret}")
     private String secret;
@@ -57,7 +59,7 @@ public class JwtService {
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public String createAccessToken(String username) {
+    public String createAccessToken(User user) {
         // 토큰의 expire 시간을 설정
         long now = (new Date()).getTime();
         Date validity = new Date(now + accessTokenExpiration);
@@ -75,7 +77,8 @@ public class JwtService {
         // claim 메소드를 통해 새롭게 추가할 수 있는 개념.
         return Jwts.builder()
                 .setSubject(ACCESS_TOKEN_SUBJECT) // Jwt Subject
-                .claim(NAME_CLAIM, username) // username 저장
+                .claim(CLAIM_NAME, user.getUsername()) // username 저장
+                .claim(CLAIN_ROLE, user.getRole().name())
                 .setExpiration(validity) // set Expire Time 해당 옵션 안넣으면 expire안함
                 .signWith(key, SignatureAlgorithm.HS512) // 사용할 암호화 알고리즘과 , signature 에 들어갈 secret값 세팅
                 .compact();
@@ -134,8 +137,8 @@ public class JwtService {
                 .build()
                 .parseClaimsJws(accessToken)
                 .getBody();
-            log.info("extractUsername : {}", claims.get(NAME_CLAIM));
-            return Optional.ofNullable((String) claims.get(NAME_CLAIM));
+            log.info("extractUsername : {}", claims.get(CLAIM_NAME));
+            return Optional.ofNullable((String) claims.get(CLAIM_NAME));
         } catch (Exception e) {
             log.error("액세스 토큰이 유효하지 않습니다.");
             return Optional.empty();
