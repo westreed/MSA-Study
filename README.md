@@ -83,6 +83,15 @@
     즉, Spring에서는 공개된 API에 대한 접근 제어만 잘 처리하면 되는 것! 위의 레포를 참고한 결과, URL의 경로상에 `auth`가 있으면 Gateway에서
     JWT에 포함된 데이터를 기반으로 처리했음.
 
+4. 권한이 없을 때 OAuth2 로그인 페이지로 이동하는 문제 발생
+
+    토큰이 없거나 토큰은 있지만 권한이 없을 경우, 401이나 403 에러가 발생해야 하지만, OAuth2 로그인 페이지로 리다이렉트 되는 문제 발생.
+    이게 문제되는 이유는 View를 Spring에서 관리하지 않기 때문에 Redirect 자체가 의미가 없음(?).
+    
+    SecurityConfig에서 이와 관련된 설정이 있음.
+    AccessDeniedHandler -> 권한 없음 (403 FORBIDDEN)
+    AuthenticationEntry -> 로그인 정보 없음 (401 UNAUTHORIZED)
+
 ## 다음 목표
 
 1. Docker로 묶어서 서비스를 실행하기. (✔️)
