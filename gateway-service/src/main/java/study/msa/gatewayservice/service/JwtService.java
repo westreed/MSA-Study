@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
-import java.util.Optional;
 
 @Slf4j
 @Service
@@ -32,22 +31,6 @@ public class JwtService {
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public Optional<String> extractUsername(String accessToken) {
-        try {
-            Claims claims = Jwts
-                    .parserBuilder()
-                    .setSigningKey(key)
-                    .build()
-                    .parseClaimsJws(accessToken)
-                    .getBody();
-            log.info("extractUsername : {}", claims.get(NAME_CLAIM));
-            return Optional.ofNullable((String) claims.get(NAME_CLAIM));
-        } catch (Exception e) {
-            log.error("액세스 토큰이 유효하지 않습니다.");
-            return Optional.empty();
-        }
-    }
-
     public int isTokenValid(String token) {
         try {
             Claims claims = Jwts
@@ -63,5 +46,5 @@ public class JwtService {
             return 904;
         }
         return 200;
-        }
+    }
 }

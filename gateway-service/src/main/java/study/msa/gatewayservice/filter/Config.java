@@ -4,9 +4,9 @@ import lombok.Getter;
 
 @Getter
 public class Config {
-    private String baseMessage;
-    private boolean preLogger;
-    private boolean postLogger;
+    private final String baseMessage;
+    private final boolean preLogger;
+    private final boolean postLogger;
 
     /*
      환경설정 파일(application.yml)에서 설정할 수 있다.

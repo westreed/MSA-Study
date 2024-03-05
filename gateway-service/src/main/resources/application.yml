@@ -1,0 +1,59 @@
+server:
+  port: 8000
+
+eureka:
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://discovery-service:8761/eureka/ # http://localhost:8761/eureka
+
+spring:
+  profiles:
+    include: jwt
+  application:
+    name: gateway-service
+
+  cloud:
+    gateway:
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allow-credentials: false
+            allowedHeaders:
+              - x-requested-with
+              - authorization
+              - content-type
+              - credential
+              - authorization-refresh
+            allowedMethods:
+              - POST
+              - GET
+              - PUT
+              - OPTIONS
+              - DELETE
+      default-filters:
+        - name: GlobalFilter
+          args:
+            baseMessage: Spring Cloud Gateway GlobalFilter
+            preLogger: true
+            postLogger: true
+      routes:
+        - id: user-service
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/user/**
+          filters:
+            - name: UserFilter
+              args:
+                baseMessage: Gateway UserFilter
+                preLogger: true
+                postLogger: true
+            - RewritePath=/user/(?<segment>.*), /$\{segment}
+        - id: llm-service
+          uri: lb://LLM-SERVICE
+          predicates:
+            - Path=/python/**
+          filters:
+            - RewritePath=/python/(?<segment>.*), /$\{segment}

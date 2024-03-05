@@ -61,6 +61,8 @@ services:
         reservations:
           cpus: "0.50"
           memory: 250M
+    environment:
+      - SECRET=${SECRET}
 
   llm-service:
     build: ./llm-service
