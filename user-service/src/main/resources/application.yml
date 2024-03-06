@@ -6,11 +6,16 @@ spring:
     import:
       - classpath:/yaml/application-local.yml
       - classpath:/yaml/application-dev.yml
+      - optional:configserver:http://config-service:8888
   profiles:
     active: local
-    include: jwt, oauth
+    include: oauth
   application:
     name: user-service
+  cloud:
+    config:
+      name: common
+      profile: jwt, oauth
 
 eureka:
   instance:

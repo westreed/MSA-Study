@@ -1,0 +1,89 @@
+server:
+  port: 8888
+
+spring:
+  application:
+    name: config-service
+
+  cloud:
+    config:
+      server:
+        encrypt:
+          enabled: false
+        git:
+          uri: git@github.com:westreed/MSA-Study-Config.git
+          ignore-local-ssh-settings: true
+          private-key: |
+            -----BEGIN OPENSSH PRIVATE KEY-----
+            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
+            -----END OPENSSH PRIVATE KEY-----
+          host-key: AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBEmKSENjQEezOmxkZMy7opKgwFB9nkt5YRrYMjNuG5N87uRgg6CLrbo5wAdT/y6v0mKV0U2w0WZ2YB/++Tpockg=
+          host-key-algorithm: ecdsa-sha2-nistp256
+
+encrypt:
+  key: helloworld
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    shutdown:
+      enabled: false
+
+eureka:
+  instance:
+    instance-id: config-instance
+
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://discovery-service:8761/eureka/

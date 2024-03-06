@@ -31,6 +31,21 @@ services:
         reservations:
           cpus: "0.50"
           memory: 500M
+  
+  config-service:
+    build: ./config-service
+    ports:
+      - "8888:8888"
+    networks:
+      - ms-network
+    deploy:
+      resources:
+        limits:
+          cpus: "1.00"
+          memory: 500M
+        reservations:
+          cpus: "0.50"
+          memory: 250M
           
   discovery-service:
     build: ./discovery-service

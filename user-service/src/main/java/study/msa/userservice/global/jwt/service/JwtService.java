@@ -61,7 +61,8 @@ public class JwtService {
 
     public String createAccessToken(User user) {
         // 토큰의 expire 시간을 설정
-        long now = (new Date()).getTime();
+        Date date = new Date();
+        long now = date.getTime();
         Date validity = new Date(now + accessTokenExpiration);
 
         // JWT 용어가 헷갈릴 수 있는데, 내용 정리를 하자면
@@ -80,6 +81,7 @@ public class JwtService {
                 .claim(CLAIM_NAME, user.getUsername()) // username 저장
                 .claim(CLAIN_ROLE, user.getRole().name())
                 .setExpiration(validity) // set Expire Time 해당 옵션 안넣으면 expire안함
+                .setIssuedAt(date)
                 .signWith(key, SignatureAlgorithm.HS512) // 사용할 암호화 알고리즘과 , signature 에 들어갈 secret값 세팅
                 .compact();
     }
