@@ -3,16 +3,11 @@ package study.msa.gatewayservice.filter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
-import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
-import org.springframework.web.server.ServerWebExchange;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-
-import java.nio.charset.StandardCharsets;
+import study.msa.gatewayservice.common.ErrorResponse;
 
 @Slf4j
 @Component
@@ -51,7 +46,7 @@ public class UserFilter extends AbstractGatewayFilterFactory<Config> {
 
             if (authFlag) {
                 if (!request.getHeaders().containsKey(HttpHeaders.AUTHORIZATION)) {
-                    return onErrorResponse(exchange, 901, "No Authorization Header");
+                    return new ErrorResponse(901, "No Authorization Header").setResponse(exchange);
                 }
             }
 
@@ -65,12 +60,5 @@ public class UserFilter extends AbstractGatewayFilterFactory<Config> {
 
             return chain.filter(exchange);
         };
-    }
-
-    public Mono<Void> onErrorResponse(ServerWebExchange exchange, int errorCode, String errorMessage) {
-        String message = "{\"Status\": " + "\"FAIL\"" + ", " + "\"message\": \"" + errorMessage + "\", "+ "\"code\": \"" + errorCode +"\"}";
-        byte[] bytes = message.getBytes(StandardCharsets.UTF_8);
-        DataBuffer buffer = exchange.getResponse().bufferFactory().wrap(bytes);
-        return exchange.getResponse().writeWith(Flux.just(buffer));
     }
 }

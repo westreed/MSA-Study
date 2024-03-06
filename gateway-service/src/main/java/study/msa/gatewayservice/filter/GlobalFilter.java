@@ -1,21 +1,17 @@
 package study.msa.gatewayservice.filter;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.http.HttpHeaders;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
-import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
-import org.springframework.web.server.ServerWebExchange;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import study.msa.gatewayservice.common.ErrorResponse;
 import study.msa.gatewayservice.service.JwtService;
 
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Objects;
 
@@ -55,13 +51,13 @@ public class GlobalFilter extends AbstractGatewayFilterFactory<Config> {
                 }
 
                 if (responseValue == 902) {
-                    return onErrorResponse(exchange, responseValue, "ID NOT MATCH IN GATEWAY");
+                    return new ErrorResponse(responseValue, "Id NOT MATCH IN GATEWAY").setResponse(exchange);
                 } else if (responseValue == 903) {
-                    return onErrorResponse(exchange, responseValue, "EXPIRED TOKEN IN GATEWAY");
+                    return new ErrorResponse(responseValue, "EXPIRED TOKEN IN GATEWAY").setResponse(exchange);
                 } else if (responseValue == 904) {
-                    return onErrorResponse(exchange, responseValue, "NOT VALID TOKEN IN GATEWAY");
+                    return new ErrorResponse(responseValue, "NOT VALID TOKEN IN GATEWAY").setResponse(exchange);
                 } else if (responseValue == 905) {
-                    return onErrorResponse(exchange, responseValue, "NOT VALID TOKEN IN GATEWAY");
+                    return new ErrorResponse(responseValue, "NOT VALID TOKEN IN GATEWAY").setResponse(exchange);
                 }
             }
 
@@ -79,12 +75,5 @@ public class GlobalFilter extends AbstractGatewayFilterFactory<Config> {
             return rawToken.substring(7);
         }
         return null;
-    }
-
-    public Mono<Void> onErrorResponse(ServerWebExchange exchange, int errorCode, String errorMessage) {
-        String message = "{\"Status\": " + "\"FAIL\"" + ", " + "\"message\": \"" + errorMessage + "\", "+ "\"code\": \"" + errorCode +"\"}";
-        byte[] bytes = message.getBytes(StandardCharsets.UTF_8);
-        DataBuffer buffer = exchange.getResponse().bufferFactory().wrap(bytes);
-        return exchange.getResponse().writeWith(Flux.just(buffer));
     }
 }
