@@ -9,7 +9,7 @@ import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import reactor.core.publisher.Mono;
-import study.msa.gatewayservice.common.ErrorResponse;
+import study.msa.gatewayservice.response.ErrorResponse;
 import study.msa.gatewayservice.service.JwtService;
 
 import java.util.List;
@@ -21,6 +21,8 @@ public class GlobalFilter extends AbstractGatewayFilterFactory<Config> {
     private final String filterName = GlobalFilter.class.getName();
     @Autowired
     private JwtService jwtService;
+    @Autowired
+    private ErrorResponse errorResponse;
 
     public GlobalFilter() {
         super(Config.class);
@@ -51,15 +53,17 @@ public class GlobalFilter extends AbstractGatewayFilterFactory<Config> {
                 }
 
                 if (responseValue == 902) {
-                    return new ErrorResponse(responseValue, "Id NOT MATCH IN GATEWAY").setResponse(exchange);
+                    return errorResponse.setResponse(exchange, responseValue, "Id NOT MATCH IN GATEWAY");
                 } else if (responseValue == 903) {
-                    return new ErrorResponse(responseValue, "EXPIRED TOKEN IN GATEWAY").setResponse(exchange);
+                    return errorResponse.setResponse(exchange, responseValue, "EXPIRED TOKEN IN GATEWAY");
                 } else if (responseValue == 904) {
-                    return new ErrorResponse(responseValue, "NOT VALID TOKEN IN GATEWAY").setResponse(exchange);
+                    return errorResponse.setResponse(exchange, responseValue, "NOT VALID TOKEN IN GATEWAY");
                 } else if (responseValue == 905) {
-                    return new ErrorResponse(responseValue, "NOT VALID TOKEN IN GATEWAY").setResponse(exchange);
+                    return errorResponse.setResponse(exchange, responseValue, "NOT VALID TOKEN IN GATEWAY");
                 }
             }
+
+            response.getHeaders().add("Access-Control-Expose-Headers", "Authorization, Authorization-Refresh");
 
             return chain.filter(exchange).then(Mono.fromRunnable(() -> {
                 if(config.isPostLogger()) {

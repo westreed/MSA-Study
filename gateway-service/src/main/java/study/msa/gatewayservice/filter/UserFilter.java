@@ -1,19 +1,23 @@
 package study.msa.gatewayservice.filter;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
-import study.msa.gatewayservice.common.ErrorResponse;
+import study.msa.gatewayservice.response.ErrorResponse;
 
 @Slf4j
 @Component
 public class UserFilter extends AbstractGatewayFilterFactory<Config> {
     private final String filterName = UserFilter.class.getName();
     private final String[] noAuthPath = {"login", "join"};
+
+    @Autowired
+    private ErrorResponse errorResponse;
 
     public UserFilter() {
         super(Config.class);
@@ -46,7 +50,7 @@ public class UserFilter extends AbstractGatewayFilterFactory<Config> {
 
             if (authFlag) {
                 if (!request.getHeaders().containsKey(HttpHeaders.AUTHORIZATION)) {
-                    return new ErrorResponse(901, "No Authorization Header").setResponse(exchange);
+                    return errorResponse.setResponse(exchange, 901, "No Authorization Header");
                 }
             }
 

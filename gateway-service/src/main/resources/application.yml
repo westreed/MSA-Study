@@ -23,20 +23,21 @@ spring:
       globalcors:
         corsConfigurations:
           '[/**]':
-            allowedOrigins: "*"
-            allow-credentials: false
+            allowedOrigins: 'http://localhost:3000'
+            allow-credentials: true
             allowedHeaders:
               - x-requested-with
               - authorization
               - content-type
               - credential
-              - authorization-refresh
+              - Authorization-Refresh
             allowedMethods:
               - POST
               - GET
               - PUT
               - OPTIONS
               - DELETE
+              - PATCH
       default-filters:
         - name: GlobalFilter
           args:
