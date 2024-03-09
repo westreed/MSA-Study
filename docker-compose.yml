@@ -46,6 +46,8 @@ services:
         reservations:
           cpus: "0.50"
           memory: 250M
+    environment:
+      - SSH_PRIVATE_KEY=${SSH_PRIVATE_KEY}
           
   discovery-service:
     build: ./discovery-service
