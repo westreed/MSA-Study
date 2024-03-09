@@ -4,8 +4,10 @@
 
 * Discovery Service : Service Discovery를 위한 서비스. 일종의 전화번호부와 같은 역할로 각각의 마이크로 서비스가 어느 위치에 있는지를 관리한다.
 * Gateway Service : 모든 클라이언트의 요청을 받아서 설정해놓은 라우팅으로 보내는 서비스.
+* Config Service : 공통된 설정정보를 Private GitHub Repository에 업로드해두고, 필요한 서비스에게 제공하는 설정 서비스.
 * User Service : 마이크로 서비스, 간단한 테스트를 위해 만듬.
 * LLM Service : 마이크로 서비스, Python Flask와 연동을 테스트해보기 위해 만듬.
+* Frontend Service : 사용자에게 보여줄 프론트엔드.
 
 <img src="https://github.com/westreed/MSA-Study/blob/main/_src/docker_container.png"/>
 <img src="https://github.com/westreed/MSA-Study/blob/main/_src/internal_request.png"/>
