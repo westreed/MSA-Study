@@ -1,5 +1,7 @@
 package study.msa.userservice.domain.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -7,12 +9,13 @@ import org.apache.coyote.BadRequestException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import study.msa.userservice.domain.dto.UserDto;
 import study.msa.userservice.domain.model.User;
 import study.msa.userservice.domain.repository.UserRepository;
+import study.msa.userservice.global.response.SuccessResponse;
 
+import java.io.IOException;
 import java.util.Optional;
 
 @Slf4j
@@ -21,10 +24,11 @@ import java.util.Optional;
 public class AuthController {
 
     private final UserRepository userRepository;
+    private final SuccessResponse successResponse;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @PostMapping("/join")
-    public @ResponseBody String join(@Valid @RequestBody UserDto userDto) throws BadRequestException {
+    public void join(HttpServletRequest request, HttpServletResponse response, @Valid @RequestBody UserDto userDto) throws IOException {
         log.info("POST /join UserDto : {}", userDto);
 
         Optional<User> userEntity = userRepository.findByUsername(userDto.getUsername());
@@ -40,6 +44,8 @@ public class AuthController {
         user.authorizeUser();
         user.passwordEncode(bCryptPasswordEncoder);
         userRepository.save(user);
-        return "redirect:/loginForm";
+        Integer status = HttpServletResponse.SC_OK;
+        String message = "가입 성공";
+        successResponse.setResponse(response, status, message, request.getRequestURI());
     }
 }

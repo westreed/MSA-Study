@@ -3,6 +3,7 @@ package study.msa.userservice.global.oauth2.handler;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -12,21 +13,19 @@ import study.msa.userservice.domain.model.User;
 import study.msa.userservice.domain.repository.UserRepository;
 import study.msa.userservice.global.jwt.service.JwtService;
 import study.msa.userservice.global.login.dto.PrincipalDetails;
+import study.msa.userservice.global.response.SuccessResponse;
 
 import java.io.IOException;
 import java.util.Optional;
 
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 
+    private final SuccessResponse successResponse;
     private final UserRepository userRepository;
     private final JwtService jwtService;
-
-    public OAuth2LoginSuccessHandler(UserRepository userRepository, JwtService jwtService) {
-        this.userRepository = userRepository;
-        this.jwtService = jwtService;
-    }
 
     @Override
     @Transactional
@@ -39,6 +38,9 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
             throw e;
         }
 
+        Integer status = HttpServletResponse.SC_OK;
+        String message = "소셜 로그인에 성공하였습니다.";
+        successResponse.setResponse(response, status, message, request.getRequestURI());
     }
 
     // TODO : 소셜 로그인 시에도 무조건 토큰 생성하지 말고 JWT 인증 필터처럼 RefreshToken 유/무에 따라 다르게 처리해보기

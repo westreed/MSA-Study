@@ -12,20 +12,23 @@ import study.msa.userservice.domain.model.Role;
 import study.msa.userservice.domain.model.User;
 import study.msa.userservice.domain.repository.UserRepository;
 import study.msa.userservice.global.jwt.service.JwtService;
+import study.msa.userservice.global.response.SuccessResponse;
 
+import java.io.IOException;
 import java.util.Optional;
 
 @Slf4j
 @RequiredArgsConstructor
 public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
+    private final SuccessResponse successResponse;
     private final JwtService jwtService;
     private final UserRepository userRepository;
 
     @Override
     @Transactional
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
-                                        Authentication authentication) {
+                                        Authentication authentication) throws IOException {
         String username = extractUsername(authentication); // 인증 정보에서 Username(email) 추출
         Optional<User> optUser = userRepository.findByUsername(username);
 
@@ -45,6 +48,9 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
         log.info("로그인에 성공하였습니다. Username : {}", username);
         log.info("로그인에 성공하였습니다. AccessToken : {}", accessToken);
         log.info("로그인에 성공하였습니다. RefreshToken : {}", refreshToken);
+        Integer status = HttpServletResponse.SC_OK;
+        String message = "로그인에 성공하였습니다.";
+        successResponse.setResponse(response, status, message, request.getRequestURI());
 
     }
 

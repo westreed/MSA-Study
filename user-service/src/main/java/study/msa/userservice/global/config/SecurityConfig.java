@@ -27,6 +27,8 @@ import study.msa.userservice.global.login.service.PrincipalDetailsService;
 import study.msa.userservice.global.oauth2.handler.OAuth2LoginFailureHandler;
 import study.msa.userservice.global.oauth2.handler.OAuth2LoginSuccessHandler;
 import study.msa.userservice.global.oauth2.service.CustomOAuth2UserService;
+import study.msa.userservice.global.response.ErrorResponse;
+import study.msa.userservice.global.response.SuccessResponse;
 
 @Configuration
 @EnableWebSecurity // Spring Security Filter(SecurityConfig를 의미함)가 Spring Filter Chain에 등록됩니다.
@@ -34,6 +36,8 @@ import study.msa.userservice.global.oauth2.service.CustomOAuth2UserService;
 public class SecurityConfig {
 
     private final ObjectMapper objectMapper;
+    private final SuccessResponse successResponse;
+    private final ErrorResponse errorResponse;
     private final UserRepository userRepository;
     private final JwtService jwtService;
     private final PrincipalDetailsService principalDetailsService;
@@ -91,12 +95,12 @@ public class SecurityConfig {
 
     @Bean
     public LoginSuccessHandler loginSuccessHandler() {
-        return new LoginSuccessHandler(jwtService, userRepository);
+        return new LoginSuccessHandler(successResponse, jwtService, userRepository);
     }
 
     @Bean
     public LoginFailureHandler loginFailureHandler() {
-        return new LoginFailureHandler();
+        return new LoginFailureHandler(errorResponse);
     }
 
 
