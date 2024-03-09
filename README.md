@@ -92,6 +92,10 @@
     AccessDeniedHandler -> 권한 없음 (403 FORBIDDEN)
     AuthenticationEntry -> 로그인 정보 없음 (401 UNAUTHORIZED)
 
+5. Config Server를 따로 만들면 Local Test에서 Config 정보가 없어서 문제가 됨.
+
+    Local Test를 고려해서 Local 환경에만 있는 환경파일을 따로 가지고 있거나 Config Serve를 항상 따로 실행시켜두고 불러올 수 있게 해야할 것 같음.
+
 ## 다음 목표
 
 1. Docker로 묶어서 서비스를 실행하기. (✔️)
