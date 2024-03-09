@@ -1,0 +1,29 @@
+body {
+    margin: 0;
+}
+
+p {
+    margin-block: 0;
+    margin-inline: 0;
+}
+
+/* button {
+    appearance: none;
+    padding: 0;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+} */
+
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.contentWrapper {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
