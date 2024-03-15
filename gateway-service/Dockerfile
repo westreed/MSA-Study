@@ -1,11 +1,6 @@
-FROM gradle:jdk21
+FROM openjdk:21-slim
 
 WORKDIR /app
-ADD build.gradle .
-RUN gradle build -x test --parallel --continue > /dev/null 2>&1 || true
+COPY /build/libs/ .
 
-COPY . .
-RUN gradle build -x test
-
-WORKDIR /app/build/libs
 ENTRYPOINT ["java", "-jar", "gateway-service.jar"]

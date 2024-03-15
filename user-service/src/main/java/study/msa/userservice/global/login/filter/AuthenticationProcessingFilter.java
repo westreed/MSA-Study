@@ -68,7 +68,11 @@ public class AuthenticationProcessingFilter extends OncePerRequestFilter {
         log.info("saveAuthentication() 호출");
         Map<String, String> payloadMap = objectMapper.readValue(decodedPayload, Map.class);
         log.info("payloadMap : {}", payloadMap);
-        UserDetails userDetails = User.builder().username(payloadMap.get("name")).password("").roles(payloadMap.get("role")).build();
+        UserDetails userDetails = User.builder()
+                .username(payloadMap.get("name"))
+                .password("")
+                .roles(payloadMap.get("role"))
+                .build();
 
         Authentication authentication = new UsernamePasswordAuthenticationToken(
                 userDetails,

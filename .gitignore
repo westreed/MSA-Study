@@ -40,3 +40,7 @@ out/
 ### PyCharm IDEA ###
 venv/
 __pycache__/
+
+
+### env ###
+.env
