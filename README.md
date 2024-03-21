@@ -61,7 +61,7 @@
 2. gRPC : Google에서 개발한 고성능 RPC(Remote Procedure Call) 프레임워크로, Protocol Buffers를 사용하여 직렬화하고 HTTP/2를 기반으로 하는 효율적인 통신을 제공합니다. gRPC는 강력한 타입 시스템을 갖추고 있으며, 다양한 언어로 지원됩니다.
 3. Message Queue: 서비스 간 비동기 통신을 위해 메시지 큐 시스템을 사용할 수 있습니다. 대표적으로 RabbitMQ, Apache Kafka, ActiveMQ 등이 있으며, 이를 통해 이벤트 기반 아키텍처를 구현할 수 있습니다.
 
-## 오류 및 해결
+## 트러블슈팅(Troubleshooting)
 
 1. Gateway Service 오류
 
